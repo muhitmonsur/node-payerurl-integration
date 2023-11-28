@@ -11,12 +11,32 @@ app.get("/", (req, res) => {
   res.send({ message: "Howdy!" });
 });
 
+//build the query string
+  function buildQueryString(obj, prefix) {
+    let queryString = [];
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const value = obj[key];
+        const propName = prefix ? `${prefix}[${key}]` : key;
+        if (value !== null && typeof value === "object") {
+          queryString.push(buildQueryString(value, propName));
+        } else {
+          queryString.push(`${propName}=${encodeURIComponent(value)}`);
+        }
+      }
+    }
+    queryString = queryString.join("&");
+    const argsString = new URLSearchParams(queryString).toString();
+    return argsString;
+  }
+
 app.post("/request", async (req, res) => {
   //get data from front end
 
   //////sample object//////////
   //********************* */
   // {
+  //   order_id: 1922658446,
   //   amount: 123,
   //   items: [
   //     {
@@ -38,9 +58,6 @@ app.post("/request", async (req, res) => {
   // post this data in json format to this endpoint of your server
   /////////
   const data = req.body;
-  //creating unique order id
-  // it can also be send from front end
-  data.order_id = new Date().getTime();
   //sort the data order by key
   const sortedArgsKeys = {};
   Object.keys(data)
@@ -50,36 +67,17 @@ app.post("/request", async (req, res) => {
     });
   console.log("sortedArgsKeys", sortedArgsKeys);
 
-  //build the query string
-  function buildQueryString(obj, prefix) {
-    const queryString = [];
-    for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        const value = obj[key];
-        const propName = prefix ? `${prefix}[${key}]` : key;
-        if (value !== null && typeof value === "object") {
-          queryString.push(buildQueryString(value, propName));
-        } else {
-          queryString.push(`${propName}=${encodeURIComponent(value)}`);
-        }
-      }
-    }
-    return queryString.join("&");
-  }
-  const modifiedArgsStr = buildQueryString(sortedArgsKeys);
-
-  const argsString = new URLSearchParams(modifiedArgsStr).toString();
-  console.log("argsString", argsString);
+  const argsString = buildQueryString(sortedArgsKeys);
   //argsString will be the payload
 
   //get your own secret key and private key
   // you can use it from environment variables
-  const securityKey = "0a634fc47368f55f1f54e472283b3acd";
+  const secretKey = "0a634fc47368f55f1f54e472283b3acd";
   const publicKey = "de1e85e8a087fed83e4a3ba9dfe36f08";
 
   // generate signature
   const signature = crypto
-    .createHmac("sha256", securityKey)
+    .createHmac("sha256", secretyKey)
     .update(argsString)
     .digest("hex");
   console.log("signature", signature);
