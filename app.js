@@ -40,15 +40,15 @@ app.post("/request", async (req, res) => {
   //   amount: 123,
   //   items: [
   //     {
-  //       name: "Order item name",
+  //       name: 'Test Order',
   //       qty: "1",
   //       price: "123"
   //     }
   //   ],
   //   currency: "usd",
-  //   billing_fname: "Mohi Uddin",
-  //   billing_lname: "Mahim",
-  //   billing_email: "Mahim@gmail.com",
+  //   billing_fname: "test_billing_fname",
+  //   billing_lname: "test_billing_lname",
+  //   billing_email: "billing_email@gmail.com",
   //   redirect_to: "http://localhost:3000/success",  // url of your front end application success page
   //   notify_url: "http://localhost:4000/response", // you will receive response from prayerURL in this link should handle POST request
   //   cancel_url: "http://localhost:3000/cancel",   // url of your front end application for cancel payment page
@@ -72,8 +72,8 @@ app.post("/request", async (req, res) => {
 
   //get your own secret key and private key
   // you can use it from environment variables
-  const secretKey = "0a634fc47368f55f1f54e472283b3acd";
-  const publicKey = "de1e85e8a087fed83e4a3ba9dfe36f08";
+  const secretKey = "your_secret_api_key";
+  const publicKey = "your_public_api_key";
 
   // generate signature
   const signature = crypto
@@ -87,8 +87,7 @@ app.post("/request", async (req, res) => {
   console.log(authStr);
 
   // make request to payerURL
-  // const url = "https://test.payerurl.com/api/payment";
-  const url = "https://dashboard.payerurl.com/api/payment";
+  const url = "https://api-v2.payerurl.com/api/payment";
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
     Authorization: `Bearer ${authStr}`,
