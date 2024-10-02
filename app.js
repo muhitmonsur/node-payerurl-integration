@@ -40,7 +40,7 @@ app.post("/request", async (req, res) => {
   //   amount: 123,
   //   items: [
   //     {
-  //       name: 'Test Order',
+  //       name: 'Test_Order', // no whitespace allow here
   //       qty: "1",
   //       price: "123"
   //     }
