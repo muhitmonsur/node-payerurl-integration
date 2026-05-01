@@ -1,4 +1,4 @@
-# Accept USDT, USDC, BTC & ETH in Node.js: 10-Minute Binance Payment Gateway Integration
+# Accept USDT, USDC, BTC & ETH in Node.js: 10-Minute Binance Payment Gateway Integration: No Binance Merchant Account Required
 
 <img src="https://raw.githubusercontent.com/muhitmonsur/assets/refs/heads/main/banner-772x250.png">
 
